@@ -9,7 +9,7 @@ async function start() {
   // load env var
 
   dotenv.config({
-    path: "./.env"
+    path: "./.env.local"
   })
 
   // connect to database
