@@ -1,9 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import { connectToDatabase } from './lib/dbConnection'
-import Operator from './models/characters'
-import { OperatorBranch, OperatorClass, OperatorGender, OperatorPosition, OperatorSource, OperatorStatus, OperatorTags } from './enums/operators'
-import { WorldFactions, WorldNations, WorldRaces } from './enums/world'
+import bodyParser from 'body-parser'
 
 async function start() {
   // load env var
@@ -12,17 +10,24 @@ async function start() {
     path: "./.env.local"
   })
 
+  // route async imports
+  const operatorRouter = await import('./routes/operator.ts')
+
+
   // connect to database
   
   await connectToDatabase();
 
   // start express server
 
+  
   const app = express()
 
-  app.get('/', (req,res) => {
-    res.send("Hello world")
-  })
+  app.use(bodyParser.json())
+
+  // Routes
+
+  app.use('/operator', operatorRouter.default)
 
   app.listen(process.env.HTTP_PORT, () => {
     console.log('Server is running on  port ' + process.env.HTTP_PORT)
