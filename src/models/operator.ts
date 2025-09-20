@@ -9,7 +9,7 @@ export interface IOperator extends Document {
     epName: string;
     fileNumber: string;
 
-    class: number;
+    playableClass: number;
     branch: number;
     position: number;
 
@@ -76,7 +76,7 @@ export const operatorZodSchema = z.object({
     epName: z.string(),
     fileNumber: z.string(),
 
-    class: z.number().gte(0).lte(7),
+    playableClass: z.number().gte(0).lte(7),
     branch: z.number().gte(0).lte(64),
     position: z.number().gte(0).lte(2),
 
@@ -143,7 +143,7 @@ const operatorMongooseSchema: Schema = new Schema<IOperator>({
     epName: {type: String, required: true},
     fileNumber: {type: String, required: true},
 
-    class: {type: Number, required: true},
+    playableClass: {type: Number, required: true},
     branch: {type: Number, required: true},
     position: {type: Number, required: true},
 
