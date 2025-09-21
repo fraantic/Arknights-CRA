@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import { connectToDatabase } from './lib/dbConnection'
 import bodyParser from 'body-parser'
+import { ajMiddleware } from './middleware/arcjet.ts'
 
 async function start() {
   // load env var
@@ -27,7 +28,7 @@ async function start() {
 
   // Routes
 
-  app.use('/operator', operatorRouter.default)
+  app.use('/operator',ajMiddleware, operatorRouter.default)
 
   app.listen(process.env.HTTP_PORT, () => {
     console.log('Server is running on  port ' + process.env.HTTP_PORT)
