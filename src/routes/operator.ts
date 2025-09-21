@@ -77,11 +77,17 @@ router.post('/post', async(req: Request & {
   }
 }, res: Response) => {
   try {
+    
 
     // define variables
     const { data } = req.body
     const results = operatorZodSchema.safeParse(req.body);
     
+
+    // checks if api key is valid
+    if (req.headers.authorization != null && req.headers.authorization != process.env.APP_SECRET) {
+      return httpResponse(401, "You are not Authorized to post to this endpoint", {}, res)
+    }
 
     // validate types and if there are missing fields with zod
     if (!results.success) {
@@ -524,7 +530,6 @@ router.get('/get', async(req: Request & {
 
     // flattens the typing / struct into the dot format mongodb accepts
     const flattenedQuery = flatten(query) as any
-      console.log(flattenedQuery['$set'])
 
     // sends a req to the db
     const operators = await Operator.find(flattenedQuery['$set'])
